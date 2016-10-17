@@ -12,7 +12,7 @@ function Get-CodeSigningCert() {
 	if($csc -eq $null) {
 		throw "Cannot find a valid CodeSigningCertificate"
 	}
-	Write-Host "Found signing certificate ${csc.Subject}"
+	Write-Host "Found signing certificate $($csc.Subject)"
 	return $csc
 }
 function Get-SignToolPath(){
@@ -31,10 +31,12 @@ function Get-SignToolPath(){
 	throw "Cannot find any installed Signtool.exe. Please install windows Sdk first or set the `$global:signToolPath variable to the path to the signtool.exe you would like to use"
 }
 function SignScript($path) {
-	if(Get-AuthenticodeSignature $path |Where-Object {$_.Status -eq "Valid"}) {
-		echo "File has already a valid signature" $path
+	$verify = (Get-AuthenticodeSignature $path)
+	if($verify.Status -eq "Valid") {
+		Write-Host "File has already a valid signature" $path
 	} else {
-		echo "Signing file " $path
+		Write-Host "Debug: Verify: $($verify.Status) $($verify.StatusMessage)"
+		Write-Host "Signing file $path"
 		$cert = Get-CodeSigningCert
 		Set-AuthenticodeSignature $path $cert -TimestampServer "http://timestamp.verisign.com/scripts/timstamp.dll" -Force
 	}
@@ -59,8 +61,8 @@ function SignMsi($url, $name, $path) {
 # SIG # Begin signature block
 # MIIWcAYJKoZIhvcNAQcCoIIWYTCCFl0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUb7ht2Qc6OIyxWk4Yt7/o6HK1
-# SX2gghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwkOEzTfPlhvSyKJX8ygBLUW2
+# KDOgghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -159,22 +161,22 @@ function SignMsi($url, $name, $path) {
 # LgYDVQQDEydHbG9iYWxTaWduIENvZGVTaWduaW5nIENBIC0gU0hBMjU2IC0gRzIC
 # DFeHRSyJO9lNEFdVJDAJBgUrDgMCGgUAoHgwGAYKKwYBBAGCNwIBDDEKMAigAoAA
 # oQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4w
-# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU0pEit5wsTtcnbPeZAhnQ9Ukt
-# 9P4wDQYJKoZIhvcNAQEBBQAEggEA6t/JWhf0thMGhUIlhKa03ALoFEosuPR1bQN/
-# tmvICo/z2imb1tYLxsxXb7dagFTNa39DrxLSLow+JfeordXodq3IvgzYobojVICT
-# xpTS1ERXvNPx0ymvegG5fx/ymiKuL9PnOEoy+1nqE4SMJ1RWHlZEfORobAdHgV6Q
-# QmGSaeCV0OTxMOuQ9Ds9n5lCdFzUHr0DeX4teZMbXV5zy32e7uMc8llmdJx5a5a/
-# nuH16C0Gb27o6LakcmWQ3La2KLSzYmVqAPtgt3ToA9DEWy/mlws93fTRSKBWl60N
-# ymQjwyMNBSPhFPi+acofwqFBy4gX91WtGtyB7A/217O06txKp6GCAgswggIHBgkq
+# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUcLKk02RHfJn//bh63veKLbTc
+# z2YwDQYJKoZIhvcNAQEBBQAEggEAEbK93d2+qvVSQ6SR/ElZRN937yYYdYxy3e3+
+# CUethoI0nbRrRHrRNL1ugPurSTkg6EVJRyueqgt80LZ0S2neyYTwh7R2kJlWgKri
+# HOBOVQI8PUxMwAX6ZPlbSpnM9bhNdRzrEt5TmSF3dtdfL88JN+wXsibTWf8GYCWz
+# Yg2FpP4nadHpxFiIMcHQg57Xuz/u4vch+RoNregykjG2DLTB3ixa23E0EOJYwce9
+# zbhMkGMKSc5A/D0WESCUI7USxToe+5pOKjdj3fccFL/KgEC8IJysqnoVxtmksSSl
+# 8RWDt8u3OWcGFe4LLSIhjAtfkxBY+o/a4q74VMnuUiiyrQntr6GCAgswggIHBgkq
 # hkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRT
 # eW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50ZWMgVGltZSBTdGFt
 # cGluZyBTZXJ2aWNlcyBDQSAtIEcyAhAOz/Q4yP6/NW4E2GqYGxpQMAkGBSsOAwIa
 # BQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0x
-# NjEwMTcwNjE2NDRaMCMGCSqGSIb3DQEJBDEWBBTpVCRnOSZ2AUrIfrXX4syC8rDE
-# jjANBgkqhkiG9w0BAQEFAASCAQB+6b3zHHqHEGl7EAkcgWLpP38ruYwycILArj/B
-# 4lSamwiYyKpqzDvQP8mrQGf+fzwshYFrIeRJ3qZuFboecqS5JIkCtODOXcIVTSyM
-# tgW1DhPm9F7oDsRgulJJ63FiPORDdGPfP5mZmD9XJS/n0izCJRz1PHprXchFGLwi
-# ihRntN0Zn5ZPL6+VChU8zmLtuQQ6l5sDFDZfZAg7894QYU6lHJbTvmRW89A5g8RN
-# cTkCEdofmogyYCj6l0N8XT7sEeN9Wzn+qlPuqK4ftHD6sHoUFGWCPD96oHL6Csm0
-# OrsYBoYZJkBIGtaOotOUomxCJlATD8A9f4nki8FEwQPyos8K
+# NjEwMTcwNjQxMjFaMCMGCSqGSIb3DQEJBDEWBBQJCoLMoYHJjaX1/sIt9hI+Y/d1
+# wTANBgkqhkiG9w0BAQEFAASCAQAdM5JZNc6+ciIsXzIuukAGYxCw7DOn64ETEOt6
+# ZWC7qj1UNutVLuoRokB/Ov0MQfbeno537s3QFmKS3bYhriMs5TsJGL8PhWpQiDaK
+# BEN5XVvZ629yxQk0PfiDxtxDYELhDsCbJX4T6I/rGMoFeDUfFn4F6vrmlpX0hbLf
+# fSCfCWfmZpXOUhGNGggR+55/cRHF/QxRnoRh5huZp/rM4FHsrDocAT/Ajcbva9tc
+# mAvwdhKANLMX6jOZiCR/FaCaLrLP7jx2sjo95xcjuMLI09qMDJg5mffWIbmDE44U
+# 8zyKIRwZ6tcOG+TnftKr64L1uam5thApOAalHjbGjzy/glRS
 # SIG # End signature block

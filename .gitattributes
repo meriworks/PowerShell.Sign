@@ -1,0 +1,2 @@
+#Signed ps1 files should not be changed
+.ps1 text eol=crlf

@@ -14,7 +14,7 @@ Function GetProjectItem($path) {
 			Write-Error "Failed searching for project item $path. Didn't find item $name in path $currentPath"
 			return $null
 		}
-		$currentPath="{0}{1}/" -f $currentPath, $item.Name
+		$currentPath="$currentPath$($item.Name)/"
 		$items = $item.ProjectItems
 	}
 	return $item
@@ -35,8 +35,8 @@ MarkFileAsBuildActionNone "_msbuild/Meriworks.PowerShell.Sign/functions.ps1"
 # SIG # Begin signature block
 # MIIWcAYJKoZIhvcNAQcCoIIWYTCCFl0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBISSI2BHL0t0FUmy3GbD8046
-# ipmgghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUvmx4SA5eTM2RfbtraF5kv0FG
+# rR2gghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -135,22 +135,22 @@ MarkFileAsBuildActionNone "_msbuild/Meriworks.PowerShell.Sign/functions.ps1"
 # LgYDVQQDEydHbG9iYWxTaWduIENvZGVTaWduaW5nIENBIC0gU0hBMjU2IC0gRzIC
 # DFeHRSyJO9lNEFdVJDAJBgUrDgMCGgUAoHgwGAYKKwYBBAGCNwIBDDEKMAigAoAA
 # oQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4w
-# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUgGchgu+7pFwru/MCck9muDAd
-# KRkwDQYJKoZIhvcNAQEBBQAEggEA08IMJWg0FGH7yamYbRXaH9UPLtvaxvgjKnlK
-# B2Mhx4Topj9AGrVERlNXSuwosjrrkr7vEiRCNXqtTdG/JD8oL/44pZIwMeuHYQRb
-# klvD3SP4+GVONe/lAgJ+R0Xb0nVW2TR/4NbCrIC1x9A+Z8aNqpAfcqP+A+H7aMSc
-# FoEndU4k+mtRuPws5KOGGnI81xmOlAHdNvxyFu9N62F9+45EKIdo7WBL5VRAaaLr
-# d4ygql6RcpepLE6Na3+oCyylbDt53VfOiewrbHE7GaKX18ru/+cwC65fB0btj5qL
-# dBjE+oSexVgN9eoYm+iLQ9+r1fwgPMn/0tyS3/QyA7PoHHtVVKGCAgswggIHBgkq
+# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU45cNZJWfLC9YKHjcBVaVn1Pf
+# UZwwDQYJKoZIhvcNAQEBBQAEggEAgJokQ8yAP9+sPD3FAbRzg2mBOk/tZMbDno5m
+# Nvj5O6Ads+Ewh+gR2l4aNSlPGfuAs0+xCJUmuNF4WnMeeKj/xB6sXwULFWqTfDmR
+# FM3ba2072Kc4jwcSG5nB+ynkRntxdp9PgaymyFk+j/aIfM6vGCm5D21UBv7IRZde
+# w5cG8nFmL6Zq6MhyYSvyddpY5p+O8AgvA0OKLqPSBQLN3ss3oUyHqVjVivL5EFLQ
+# UAuiEMKcjg0ZOp5ENcZ2eV6YBXlXqUToqD7JG3Ti5UsdQ8xQAkljkq2LvYOqEnUE
+# 1igCXceqFcl2PIpn4nFX9gbbKidAotyTy+Gtb8Ame6TW5a7r86GCAgswggIHBgkq
 # hkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRT
 # eW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50ZWMgVGltZSBTdGFt
 # cGluZyBTZXJ2aWNlcyBDQSAtIEcyAhAOz/Q4yP6/NW4E2GqYGxpQMAkGBSsOAwIa
 # BQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0x
-# NjEwMTcwNjE2MjNaMCMGCSqGSIb3DQEJBDEWBBSRXKfy4pne/h4NA13nHgD96ofp
-# cTANBgkqhkiG9w0BAQEFAASCAQBGdeZ+i8P99bC2/Ryvck+jGbK8QCgHTbDevC7M
-# 6V9vkLWg/a3zcggE12y/XoJInyujVmRbbd62+5p8q0HfdJZMR++XLugSQEiDGia/
-# G1ylsZgyTftYLnO3cWN/ZOO/yzwn3YLwke94OFfIN+RJhvx2cuS6eOWsMrBax94X
-# r8ozfzSPmeecYafsmAJ8z5+dPXC/+Jn0emv8BIU2ngwT1E7nF/JfqdNItpxyAbFR
-# fUymG/VzKiV5PDLteu/IVj/e9NjbaoLhlI7xArGEroKqyQYotfrdaoIuGmBDJa18
-# uXeDglxWU+6wnGuAsefuMndGmKgf2rdDKS/qT/W9ci6tlXlu
+# NjEwMTcwNjM5NTZaMCMGCSqGSIb3DQEJBDEWBBSPP+M6gQDvmVfZZGTTe3LpzPNC
+# wzANBgkqhkiG9w0BAQEFAASCAQAQNnLmRCFpfTtho8Q/vfRbtxWcoYWy9x+lhC3h
+# D+7qd8kyJCTlMrdQfN19gmnzSDz3etFLYa5Y0jrObFCF2rwTiHVVtacPyjH5Y03V
+# QMqyewAaHIQ6s7Nr02oxEDZC65yIRO0A1CD5CdDGauEAkxPZm8AImbYIxL0AWFfX
+# +OJkWhciDFM8VIPEI/cYXU/WBW6yHkPn9+HKXT4aLATMp5fdhKcG0I60O8/fsjPW
+# UOx2vfyjG3bti68nBXU01r5sDjIXcdzt5faA11Ywr5KNyfTKJ+UUnbFRKddrJCue
+# mRAt8jIqKhFXjJRipBzoy1Iuv/EwoqMUHbUtJEF4aq/998V8
 # SIG # End signature block
