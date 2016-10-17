@@ -5,11 +5,11 @@
     <version>$version$</version>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>http://www.meriworks.se</licenseUrl>
-    <projectUrl>http://www.meriworks.se</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/meriworks/PowerShell.Sign/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/meriworks/PowerShell.Sign</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Adds powershell scripts for signing</description>
-    <tags>Meriworks PowerShell visual studio Project</tags>
+    <description>Adds PowerShell functions to allow you to sign scripts and files using a code signing certificate.</description>
+    <tags>Meriworks PowerShell Visual Studio Project</tags>
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>true</developmentDependency>
