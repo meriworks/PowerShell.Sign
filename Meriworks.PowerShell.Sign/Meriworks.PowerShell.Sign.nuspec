@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata minClientVersion="2.8">
+    <id>$id$</id>
+    <version>$version$</version>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.meriworks.se</licenseUrl>
+    <projectUrl>http://www.meriworks.se</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Adds powershell scripts for signing</description>
+    <tags>Meriworks PowerShell visual studio Project</tags>
+    <releaseNotes>
+    </releaseNotes>
+    <developmentDependency>true</developmentDependency>
+  </metadata>
+  <files>
+    <file src="nuspec\content\**\*.*" target="content\"/>
+    <file src="nuspec\tools\**\*.*" target="tools\"/>
+  </files>
+</package>
