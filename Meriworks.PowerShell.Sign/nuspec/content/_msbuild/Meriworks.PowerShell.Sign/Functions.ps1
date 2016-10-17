@@ -1,16 +1,19 @@
 ﻿#Get the first valid codesigning cert
-$csc = Get-ChildItem -Recurse cert:\CurrentUser\My -CodeSigningCert|where-object {$_.GetExpirationDateString() -ge [System.DateTime]::Now.ToString() -and $_.PrivateKey -ne $null}
-if($csc -is [system.array]){
-	$csc=$csc[0]
-}
-if($csc -eq $null) {
-	throw "Cannot find a valid CodeSigningCertificate"
-}
-echo "Found signing certificate " $csc.Subject
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 function Get-RegValue([String] $KeyPath, [String] $ValueName) {
     (Get-ItemProperty -LiteralPath $KeyPath -Name $ValueName).$ValueName
+}
+function Get-CodeSigningCert() {
+	$csc = Get-ChildItem -Recurse cert:\CurrentUser\My -CodeSigningCert|where-object {$_.GetExpirationDateString() -ge [System.DateTime]::Now.ToString() -and $_.PrivateKey -ne $null}
+	if($csc -is [system.array]){
+		$csc=$csc[0]
+	}
+	if($csc -eq $null) {
+		throw "Cannot find a valid CodeSigningCertificate"
+	}
+	Write-Host "Found signing certificate ${csc.Subject}"
+	return $csc
 }
 function Get-SignToolPath(){
 
@@ -32,7 +35,8 @@ function SignScript($path) {
 		echo "File has already a valid signature" $path
 	} else {
 		echo "Signing file " $path
-		Set-AuthenticodeSignature $path $csc -TimestampServer "http://timestamp.verisign.com/scripts/timstamp.dll" -Force
+		$cert = Get-CodeSigningCert
+		Set-AuthenticodeSignature $path $cert -TimestampServer "http://timestamp.verisign.com/scripts/timstamp.dll" -Force
 	}
 }
 function SignScriptsInFolder($folder) {
@@ -45,17 +49,18 @@ function SignMsi($url, $name, $path) {
 	#Don't use set authenticode since it cannot set the program name (as with signtools /d option)
 	#Set-AuthenticodeSignature -Certificate $csc "$outputFile"
 
-	$signTool = get-signtoolpath
+	$signTool = Get-SignToolPath
+	$cert = Get-CodeSigningCert
 
 	Write-Host "SignTool: $signTool sign /sha1 ""$($csc.Thumbprint)"" /du ""$url"" /d ""$name"" /t ""http://timestamp.verisign.com/scripts/timstamp.dll"" ""$path"""
-	&$signTool sign /sha1 "$($csc.Thumbprint)" /du "$url" /d "$name" /t "http://timestamp.verisign.com/scripts/timstamp.dll" "$path"
+	&$signTool sign /sha1 "$($cert.Thumbprint)" /du "$url" /d "$name" /t "http://timestamp.verisign.com/scripts/timstamp.dll" "$path"
 }
 
 # SIG # Begin signature block
 # MIIWcAYJKoZIhvcNAQcCoIIWYTCCFl0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU0mWQqHghP5a8i5eS23OkhkpB
-# gIqgghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUb7ht2Qc6OIyxWk4Yt7/o6HK1
+# SX2gghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -154,22 +159,22 @@ function SignMsi($url, $name, $path) {
 # LgYDVQQDEydHbG9iYWxTaWduIENvZGVTaWduaW5nIENBIC0gU0hBMjU2IC0gRzIC
 # DFeHRSyJO9lNEFdVJDAJBgUrDgMCGgUAoHgwGAYKKwYBBAGCNwIBDDEKMAigAoAA
 # oQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4w
-# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUzx7e6hfoI7SsAEqSTxywzSiF
-# jA8wDQYJKoZIhvcNAQEBBQAEggEAAJEjfyoVm8xDEwK3/aKobHhkDWBRpaTJikph
-# 6AoiELllWmxBEARK1hzkwSnQK/dZTc9Xdq5z2LGhgoa7ivz7AMBIXeU0g3M0oJ1A
-# 53cJB36B3WkVzcBhKBq9pPg023GiBv3YQ7QfuwPqdLCYIhh0hR+L6UGANh4jweyq
-# 8FhRIRwfGNBoN/0yTLo9dHFWFUXYGvgLUBB+OLQEt3ocb8B4BKZkG13Sh6mm2G7d
-# cuVsVlK2bgzbEKElUwoIdu378CbjflPcVV/QmAqHELreSNUzCYs0SBnPSiaR8RFH
-# 0h5QXqLYYZm7otlVtbdwb7W8t/Mbrv7rU5poE9YpGuJlMi06XKGCAgswggIHBgkq
+# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU0pEit5wsTtcnbPeZAhnQ9Ukt
+# 9P4wDQYJKoZIhvcNAQEBBQAEggEA6t/JWhf0thMGhUIlhKa03ALoFEosuPR1bQN/
+# tmvICo/z2imb1tYLxsxXb7dagFTNa39DrxLSLow+JfeordXodq3IvgzYobojVICT
+# xpTS1ERXvNPx0ymvegG5fx/ymiKuL9PnOEoy+1nqE4SMJ1RWHlZEfORobAdHgV6Q
+# QmGSaeCV0OTxMOuQ9Ds9n5lCdFzUHr0DeX4teZMbXV5zy32e7uMc8llmdJx5a5a/
+# nuH16C0Gb27o6LakcmWQ3La2KLSzYmVqAPtgt3ToA9DEWy/mlws93fTRSKBWl60N
+# ymQjwyMNBSPhFPi+acofwqFBy4gX91WtGtyB7A/217O06txKp6GCAgswggIHBgkq
 # hkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRT
 # eW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50ZWMgVGltZSBTdGFt
 # cGluZyBTZXJ2aWNlcyBDQSAtIEcyAhAOz/Q4yP6/NW4E2GqYGxpQMAkGBSsOAwIa
 # BQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0x
-# NjEwMTcwNTQ2MzdaMCMGCSqGSIb3DQEJBDEWBBRYqhFgjrdEBP3QPtqArfzRdD7I
-# VDANBgkqhkiG9w0BAQEFAASCAQA755JNbxcCdMz2w8LsN3xA0OqdgJP1R1mLDIUR
-# fWGVbAqtNlh0P9QlL99JtxN3chC4sCUpX/EX2Mk9DGwxl85AcNmRG21VQO3Bz37z
-# fG16SezyamCCC+TcbD/PG6oSyQqaDs9wccR0TJALEKuUxbnka1Z/EEM6VoufLP0g
-# bSTj8dpoiRN88v95/SgeRZieavUlkWdRYKUdasXUtXwM/L/fZoIFeKlIft3zHCXm
-# eVFmq7eUK7jo0dUo3RdFIzO1dk2gO7UHGK74Mdlv4Wl9qIRt+TmhMaN3+qoJRycl
-# StsryQVRgDSEazR29PtdGFCUvjYwkUwzGsrFYqqF6SaMic6B
+# NjEwMTcwNjE2NDRaMCMGCSqGSIb3DQEJBDEWBBTpVCRnOSZ2AUrIfrXX4syC8rDE
+# jjANBgkqhkiG9w0BAQEFAASCAQB+6b3zHHqHEGl7EAkcgWLpP38ruYwycILArj/B
+# 4lSamwiYyKpqzDvQP8mrQGf+fzwshYFrIeRJ3qZuFboecqS5JIkCtODOXcIVTSyM
+# tgW1DhPm9F7oDsRgulJJ63FiPORDdGPfP5mZmD9XJS/n0izCJRz1PHprXchFGLwi
+# ihRntN0Zn5ZPL6+VChU8zmLtuQQ6l5sDFDZfZAg7894QYU6lHJbTvmRW89A5g8RN
+# cTkCEdofmogyYCj6l0N8XT7sEeN9Wzn+qlPuqK4ftHD6sHoUFGWCPD96oHL6Csm0
+# OrsYBoYZJkBIGtaOotOUomxCJlATD8A9f4nki8FEwQPyos8K
 # SIG # End signature block
