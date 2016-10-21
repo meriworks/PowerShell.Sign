@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003" ToolsVersion="4.0">
+    <PropertyGroup>
+        <BuildEventsRunnerExtensions Condition="'$(BuildEventsRunnerExtensions)' != ''">$(BuildEventsRunnerExtensions),</BuildEventsRunnerExtensions>
+        <BuildEventsRunnerExtensions>$(MSBuildThisFileDirectory)..\tools\SignFunctions.psm1</BuildEventsRunnerExtensions>
+    </PropertyGroup>
+</Project>

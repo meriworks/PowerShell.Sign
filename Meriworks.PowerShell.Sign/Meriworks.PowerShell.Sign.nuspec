@@ -1,21 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8">
-    <id>$id$</id>
+    <id>Meriworks.PowerShell.Sign</id>
     <version>$version$</version>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <authors>dhvik</authors>
     <licenseUrl>https://raw.githubusercontent.com/meriworks/PowerShell.Sign/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/meriworks/PowerShell.Sign</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Adds PowerShell functions to allow you to sign scripts and files using a code signing certificate.</description>
-    <tags>Meriworks PowerShell Visual Studio Project</tags>
+    <tags>Meriworks PowerShell Visual-Studio Project Sign Authenticode msi</tags>
     <releaseNotes>
     </releaseNotes>
     <developmentDependency>true</developmentDependency>
+      <dependencies>
+          <dependency id="Meriworks.PowerShell.BuildEvents" version="5.1"/>
+      </dependencies>
   </metadata>
   <files>
-    <file src="nuspec\content\**\*.*" target="content\"/>
+    <file src="nuspec\build\**\*.*" target="build\"/>
     <file src="nuspec\tools\**\*.*" target="tools\"/>
   </files>
 </package>

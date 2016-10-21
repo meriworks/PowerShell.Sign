@@ -1,4 +1,6 @@
-﻿$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+﻿Write-Host "Information: Documentation for Meriworks.PowerShell.Sign can be found @ https://github.com/meriworks/PowerShell.Sign"
+
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
 function Get-RegValue([String] $KeyPath, [String] $ValueName) {
     (Get-ItemProperty -LiteralPath $KeyPath -Name $ValueName).$ValueName
@@ -65,8 +67,8 @@ function SignMsi($url, $name, $path) {
 # SIG # Begin signature block
 # MIIWcAYJKoZIhvcNAQcCoIIWYTCCFl0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQURleqxo7X9uMUfWWP0CU9rXpY
-# gKagghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUX+lR6iQy/XbKVeGKj8wjc1yH
+# zpigghHAMIID7jCCA1egAwIBAgIQfpPr+3zGTlnqS5p31Ab8OzANBgkqhkiG9w0B
 # AQUFADCBizELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTEUMBIG
 # A1UEBxMLRHVyYmFudmlsbGUxDzANBgNVBAoTBlRoYXd0ZTEdMBsGA1UECxMUVGhh
 # d3RlIENlcnRpZmljYXRpb24xHzAdBgNVBAMTFlRoYXd0ZSBUaW1lc3RhbXBpbmcg
@@ -165,22 +167,22 @@ function SignMsi($url, $name, $path) {
 # LgYDVQQDEydHbG9iYWxTaWduIENvZGVTaWduaW5nIENBIC0gU0hBMjU2IC0gRzIC
 # DFeHRSyJO9lNEFdVJDAJBgUrDgMCGgUAoHgwGAYKKwYBBAGCNwIBDDEKMAigAoAA
 # oQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4w
-# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU/s+awLnoLLHPdJA3iazXXeuv
-# enkwDQYJKoZIhvcNAQEBBQAEggEADEROQ+oJph579fYRuYGurslKUeJ+5x2amFUS
-# 1Ny80DnlTfmGOO+f1RMDgJdcUZbb5TFj1UeG7MTTsTVPK8/bV2RpY74upn2qVfdk
-# c+XtT1aK1ff6fOjyBgs4MQvurXt0AR2upeCOR+JSnWKDYeIn/erd/trvZm62Yiup
-# NfZNQ5BhwVPwKONhgtkBjLCXIGZpmRc6lreneL1DYJU+VAYlEE9mgAx4mhcsPqVD
-# UfTTz5/pU4lIQGwgrazHVQ5maCZImPlRa7SI3Oj1XopOO+UQRWyA2OeIcUgW2sFM
-# AGBMk7luQXOM1bslyR1H+PWtepM2k9tuvBFSK0FmiNUxQmV+uqGCAgswggIHBgkq
+# DAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUfhFXpA/BgNmT+CZH3LwXODPK
+# 8DswDQYJKoZIhvcNAQEBBQAEggEAsSs8zfMbbcsnL5DJuJCm/lZf6z0FmyNmlKOl
+# V03PawT40vkCAFD3Y+EjcXXmoqFaNcXbfPVKzZEUWhax7yyqDVl1PTbeQX8hi3lA
+# W/el92KkRmLK6IxUlStpueU1U/UYCqZADoO5HSl8EbKnIWIstIlhu676Vb8y71P9
+# b27tOp+EKxi/iFVLsk/BdPQr0vhfjTBzc76L3K/zOS7Xx9YDfj7GkftsVoXMXgq4
+# C6fmqa1KXj4+yMRrScOPJNURF1dkIjcxiwMd8aHGKsT/Y3j/tYrI9+AR7g+KJQ0V
+# 4MUyu+8kGhpxqLbY10iAHQal9juPtPuafYyJRU9AVcATExa71aGCAgswggIHBgkq
 # hkiG9w0BCQYxggH4MIIB9AIBATByMF4xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRT
 # eW1hbnRlYyBDb3Jwb3JhdGlvbjEwMC4GA1UEAxMnU3ltYW50ZWMgVGltZSBTdGFt
 # cGluZyBTZXJ2aWNlcyBDQSAtIEcyAhAOz/Q4yP6/NW4E2GqYGxpQMAkGBSsOAwIa
 # BQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0x
-# NjEwMTcwNjQ4NTdaMCMGCSqGSIb3DQEJBDEWBBQVMebpBoX8kUm+3lBlbICOPXPn
-# gjANBgkqhkiG9w0BAQEFAASCAQBImoh2YlRN1jfJPvMM+dtZKBoKLDLWQJKT9svc
-# FxiAOmRMLL2Taviz09pTK/Lx5DnvfZ03Kt/wbODBTlVUA37XJOh/rqwJmKrPpiCX
-# 8+AqnkgqNOK2X5YCxqC5Mos31TIDSnKRqaj5z4B3Dc89pkbqwL/ivdjtJMjDUBRd
-# 8Fq2ovqohx0+LD7uRjlvFuTm0zRrBhKTbDgFem23hu04il4SL1vqCsAiZeR7uQXX
-# KhyCjNvdhM9CTHlHiizkeyt4mjMUlsKxwBDbPjjwwtkzkjV80xBs2CX2F3cJrhWG
-# OyiliIYlGxTkMdYpT1VdTZFIViRNrEtJgdFV0G2xx3/Y567w
+# NjEwMjEwODAzMjZaMCMGCSqGSIb3DQEJBDEWBBQGG4n0O37rrcDXEY3+tFn7Te9x
+# OTANBgkqhkiG9w0BAQEFAASCAQCNc9Jqjm0T28VBqeFNMY7E3xnPYpDeaPvaEWrn
+# 0wpRYayaLZsORQLUIPckZtZCgL6vdMhE9Oq7ZGn8XaedylbgUa9kmd2ZN6+LS2xm
+# L3EqKkN9SQqVYi1aHxlskqM/Uw47jNFhk/FfreZcb8y5Z9oofwO76y/ypFk6+OP9
+# YFulynv4s03sWvV2/sHWpWw62qsh0wbKPEpNo2dnUyjj4A+IWJmqIPOvR/U3A4Je
+# 7iThQT3cuko06vOV+BQD1qIfCbvedqnKJVeDoOv0wbP62+DLbGHiXocc8o0YNnLV
+# eCxYUjL1JhGVSU9Wo0l+pWgF5LhH4FAAP5qzBgyZZgznDdxn
 # SIG # End signature block
