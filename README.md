@@ -10,11 +10,11 @@ Is an [Extension Module](https://github.com/meriworks/PowerShell.BuildEvents#Ext
 
 <a name="license"></a>
 ## License
-Project is licensed using the [MIT License](LICENSE.md).
+Licensed using the [MIT License](LICENSE.md).
 
 <a name="author"></a>
 ## Author
-Package is developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.meriworks.se).
+Developed by [Dan HÃ¤ndevik](mailto:dan@meriworks.se), [Meriworks](http://www.meriworks.se).
 
 <a name="changelog"></a>
 ## Changelog
@@ -34,7 +34,7 @@ Package is developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](htt
 ## Documentation
 
 ### Signing items
-When including the nuget package to your Visual Studio project, the following PowerShell functions is automatically available in the [BuildEvent scripts](https://github.com/meriworks/PowerShell.BuildEvents#documentation).
+When including the NuGet package to your Visual Studio project, the following PowerShell functions is automatically available in the [BuildEvent scripts](https://github.com/meriworks/PowerShell.BuildEvents#documentation).
 
 #### SignScript
 This method will sign a ps1 script using the **Set-Authenticode** command if needed.
@@ -64,7 +64,7 @@ Usage:
 
 <a name="cannot_find_functions.ps1_file"></a>
 #### Cannot find Functions.ps1 file
-Since version 6, this file is now included automatically and the PowerShell dotting is now obsolete and the previos initialization line needs to be removed from the scripts.
+Since version 6, this file is now included automatically and the PowerShell dotting is now obsolete and the previous initialization line needs to be removed from the scripts.
 
 > ~~. (Join-Path $projectDir "_msbuild/Meriworks.PowerShell.Sign/Functions.ps1")~~
 
@@ -72,7 +72,7 @@ Since version 6, this file is now included automatically and the PowerShell dott
 In case you get the error message above when invoking the scripts, then follow the instructions below
 
 * Download and install Capicom 2.1.0.2 <http://www.microsoft.com/sv-se/download/details.aspx?id=25281>
-* Copty capicom.dll from `C:\Program Files (x86)\Microsoft CAPICOM 2.1.0.2\lib\X86\` to `C:\Windows\SysWOW64\`
+* Copy capicom.dll from `C:\Program Files (x86)\Microsoft CAPICOM 2.1.0.2\lib\X86\` to `C:\Windows\SysWOW64\`
 * Start a cmd prompt in admin mode and run the following commands
 		
 		cd C:\Windows\SysWOW64
