@@ -19,6 +19,10 @@ Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.me
 <a name="changelog"></a>
 ## Changelog
 
+### v6.0.1 - 2017-09-25
+* Fixed issue where the path to signtool.exe was incorrectly calculated
+
+
 ### v6.0.0 - 2016-10-21
 * [Inlining of Function.ps1 is no longer supported](#cannot_find_functions.ps1_file)
 * Removed unused dll from nupkg file
