@@ -24,9 +24,14 @@ function Get-SignToolPath(){
         return $global:signToolPath
     }
     $kitsroot = Get-Item "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots"|Select-Object -ExpandProperty Property|where {$_ -like "kitsroot*"}
+	$arch = $ENV:PROCESSOR_ARCHITECTURE
+	if($arch -eq "AMD64")
+	{
+		$arch = "x64"
+	}
     foreach ($kit in $kitsroot) {
         $kitPath = Get-RegValue "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" $kit
-        $path = join-path $kitPath "bin\$ENV:PROCESSOR_ARCHITECTURE\signtool.exe"
+        $path = join-path $kitPath "bin\$arch\signtool.exe"
         if( test-path $path) {
             return $path
         }
