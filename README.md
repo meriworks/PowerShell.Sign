@@ -72,6 +72,9 @@ Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.me
 <a name="changelog"></a>
 ## Changelog
 
+### v6.0.3 - 2018-04-19
+* Fixed an issue with expiration date
+
 ### v6.0.2 - 2018-04-19
 * Now supports Windows 10 Sdk paths for signtool.exe
 
