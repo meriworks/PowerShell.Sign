@@ -36,6 +36,18 @@ function Get-SignToolPath(){
             return $path
         }
     }
+	#Windows 10 kits are registered in another way
+	$kitVersions = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots"
+	foreach($kv in $kitVersions){
+		$version = split-path -leaf $kv.Name
+		$major = $version.split('.')[0]
+		$kitPath = Get-RegValue "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" "KitsRoot$major"
+        
+	    $path = join-path $kitPath "bin\$version\$arch\signtool.exe"
+        if( test-path $path) {
+            return $path
+        }
+    }
 	throw "Cannot find any installed Signtool.exe. Please install windows Sdk first or set the `$global:signToolPath variable to the path to the signtool.exe you would like to use"
 }
 

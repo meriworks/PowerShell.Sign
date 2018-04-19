@@ -3,36 +3,15 @@ Adds PowerShell functions to allow you to sign scripts and files using a code si
 
 Is an [Extension Module](https://github.com/meriworks/PowerShell.BuildEvents#Extension_Modules) to the [Meriworks.PowerShell.BuildEvents](https://github.com/meriworks/PowerShell.BuildEvents) .
 
+* [Requirements](#requirements)
+* [Documentation](#documentation)
 * [License](#license)
 * [Author](#author)
 * [Changelog](#changelog)
-* [Documentation](#documentation)
 
-<a name="license"></a>
-## License
-Licensed using the [MIT License](LICENSE.md).
-
-<a name="author"></a>
-## Author
-Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.meriworks.se).
-
-<a name="changelog"></a>
-## Changelog
-
-### v6.0.1 - 2017-09-25
-* Fixed issue where the path to signtool.exe was incorrectly calculated
-
-
-### v6.0.0 - 2016-10-21
-* [Inlining of Function.ps1 is no longer supported](#cannot_find_functions.ps1_file)
-* Removed unused dll from nupkg file
-* Removed scripts and readme from project
-
-### v5.0.1 - 2016-10-17
-* Minor changes in nuspec, license and documentation
-
-### v5.0.0 - 2016-10-17
-* Initial release
+<a name="requirements"></a>
+## Requirements
+To sign your files you need to have signtool.exe installed. The easiest way to install it and allow the Meriworks.PowerShell.Sign scripts to find it is to install the [Windows Sdk](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
 
 <a name="documentation"></a>
 ## Documentation
@@ -81,3 +60,33 @@ In case you get the error message above when invoking the scripts, then follow t
 		
 		cd C:\Windows\SysWOW64
 		Regsvr32 capicom.dll
+
+<a name="license"></a>
+## License
+Licensed using the [MIT License](LICENSE.md).
+
+<a name="author"></a>
+## Author
+Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.meriworks.se).
+
+<a name="changelog"></a>
+## Changelog
+
+### v6.0.2 - 2018-04-19
+* Now supports Windows 10 Sdk paths for signtool.exe
+
+### v6.0.1 - 2017-09-25
+* Fixed issue where the path to signtool.exe was incorrectly calculated
+
+
+### v6.0.0 - 2016-10-21
+* [Inlining of Function.ps1 is no longer supported](#cannot_find_functions.ps1_file)
+* Removed unused dll from nupkg file
+* Removed scripts and readme from project
+
+### v5.0.1 - 2016-10-17
+* Minor changes in nuspec, license and documentation
+
+### v5.0.0 - 2016-10-17
+* Initial release
+
