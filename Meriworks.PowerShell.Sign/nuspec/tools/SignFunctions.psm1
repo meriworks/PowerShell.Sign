@@ -60,6 +60,10 @@ function SignScript($path) {
 		Write-Host "Signing file $path"
 		$cert = Get-CodeSigningCert
 		Set-AuthenticodeSignature $path $cert -TimestampServer "http://timestamp.verisign.com/scripts/timstamp.dll" -Force
+		$verify = (Get-AuthenticodeSignature $path)
+		if($verify.Status -ne "Valid") {
+			throw "Failed to sign $path Status :$($verify.Status)"
+		}
 	}
 }
 

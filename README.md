@@ -72,6 +72,9 @@ Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.me
 <a name="changelog"></a>
 ## Changelog
 
+### v6.0.4 - 2018-04-25
+* Added error handling if singing a script fails
+
 ### v6.0.3 - 2018-04-19
 * Fixed an issue with expiration date
 
