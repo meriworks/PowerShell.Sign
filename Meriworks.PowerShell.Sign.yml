@@ -1,0 +1,104 @@
+# ASP.NET
+
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+  branches:
+   include:
+    - master
+    - develop
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+#import the passwords variable group from library
+- group: 'Certificate Passwords'
+- group: 'common'
+- name:  version.majorMinor
+  value: '6.1'
+#build will reset to 0 whenever version.majorMinor is changed
+- name: version.build
+  value: $[counter(variables['version.majorMinor'],0)]
+#revision will never reset, starting at 300 (to mimic the last iteration from last buildserver)
+- name:  version.revision
+  value: $[counter('revision',0)] 
+- name:  version.simple
+  value: $[format('{0}.{1}',variables['version.majorMinor'], variables['version.build'])]
+- name: version.assembly
+  value: $[format('{0}.0',variables['version.simple'])]
+- name: version.file
+  value: $[format('{0}.{1}',variables['version.simple'],variables['version.revision'])]
+
+name: $(version.file)
+
+steps:
+- checkout: self
+  fetchDepth: 1
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
+    vstsFeed: 'e199b9e1-58a8-4889-9613-ee0097517479/478b0e05-737f-44d6-baaf-a169474688e6'
+
+- task: Assembly-Info-NetFramework@2
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**\AssemblyInfo.cs'
+    InsertAttributes: false
+    FileEncoding: 'auto'
+    WriteBOM: false
+    Company: 'Meriworks'
+    VersionNumber: '$(version.assembly)'
+    FileVersionNumber: '$(version.file)'
+    InformationalVersion: '$(version.simple)'
+    LogLevel: 'verbose'
+    FailOnWarning: false
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+#    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    
+# - task: VisualStudioTestPlatformInstaller@1
+  # inputs:
+    # packageFeedSelector: 'nugetOrg'
+    # versionSelector: 'latestStable'
+
+# - task: VSTest@2
+  # inputs:
+    # testSelector: 'testAssemblies'
+    # testAssemblyVer2: |
+      # **\*.Tests.dll
+      # !**\*TestAdapter.dll
+      # !**\obj\**
+    # searchFolder: '$(System.DefaultWorkingDirectory)'
+    # platform: '$(buildPlatform)'
+    # configuration: '$(buildConfiguration)'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**\*.csproj;!**\*.Tests.csproj'
+    packDestination: '$(build.artifactstagingdirectory)'
+    versioningScheme: 'off'
+    
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: 'e199b9e1-58a8-4889-9613-ee0097517479/478b0e05-737f-44d6-baaf-a169474688e6'
+
+- task: PublishBuildArtifacts@1    
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
