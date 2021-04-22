@@ -43,6 +43,13 @@ Usage:
     $file = "path/to/myprogram.msi"
     SignMsi "www.mysite.com" "My program v1.0.0 setup" $file
 
+#### Timestamp Url
+When signing, a timestamp server is used. To specify which timestamp server to use, set the `$global:timestampUrl` variable before signing.
+
+    $global:timestampUrl = "http://timestamp.globalsign.com/?signature=sha2"
+    SignMsi "www.mysite.com" "My program v1.0.0 setup" "path/to/myprogram.msi"
+
+
 ### Troubleshooting
 
 <a name="cannot_find_functions.ps1_file"></a>
