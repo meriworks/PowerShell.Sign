@@ -72,6 +72,9 @@ Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.me
 <a name="changelog"></a>
 ## Changelog
 
+### v6.2 - 2021-04-22
+* Changed timestamp server url
+
 ### v6.1.0 - 2020-09-01
 * Moved to azure pipelines
 
