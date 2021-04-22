@@ -53,6 +53,7 @@ When signing, a timestamp server is used. To specify which timestamp server to u
 ### Troubleshooting
 
 <a name="cannot_find_functions.ps1_file"></a>
+
 #### Cannot find Functions.ps1 file
 Since version 6, this file is now included automatically and the PowerShell dotting is now obsolete and the previous initialization line needs to be removed from the scripts.
 
@@ -69,18 +70,21 @@ In case you get the error message above when invoking the scripts, then follow t
 		Regsvr32 capicom.dll
 
 <a name="license"></a>
+
 ## License
 Licensed using the [MIT License](LICENSE.md).
 
 <a name="author"></a>
+
 ## Author
 Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.meriworks.se).
 
 <a name="changelog"></a>
+
 ## Changelog
 
 ### v6.2 - 2021-04-22
-* Changed timestamp server url
+* Changed timestamp server url and made it configurable [#1](https://github.com/meriworks/PowerShell.Sign/issues/1)
 
 ### v6.1.0 - 2020-09-01
 * Moved to azure pipelines
@@ -96,7 +100,6 @@ Developed by [Dan Händevik](mailto:dan@meriworks.se), [Meriworks](http://www.me
 
 ### v6.0.1 - 2017-09-25
 * Fixed issue where the path to signtool.exe was incorrectly calculated
-
 
 ### v6.0.0 - 2016-10-21
 * [Inlining of Function.ps1 is no longer supported](#cannot_find_functions.ps1_file)
