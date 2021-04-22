@@ -86,10 +86,12 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    command: 'pack'
-    packagesToPack: '**\*.csproj;!**\*.Tests.csproj'
-    packDestination: '$(build.artifactstagingdirectory)'
-    versioningScheme: 'off'
+    command: 'custom'
+    arguments: 'pack $(Build.SourcesDirectory)\Meriworks.PowerShell.Sign\Meriworks.PowerShell.Sign.csproj  -NonInteractive -OutputDirectory $(build.artifactstagingdirectory) -Properties Configuration=Release -Verbosity Detailed -Exclude bin/**/*.*'
+#C:\hostedtoolcache\windows\NuGet\5.9.1\x64\nuget.exe pack D:\a\1\s\Meriworks.PowerShell.Sign\Meriworks.PowerShell.Sign.csproj -NonInteractive -OutputDirectory D:\a\1\a -Properties Configuration=Release -Verbosity Detailed
+#    packagesToPack: '**\*.csproj;!**\*.Tests.csproj'
+#    packDestination: '$(build.artifactstagingdirectory)'
+#    versioningScheme: 'off'
     
 - task: NuGetCommand@2
   inputs:
