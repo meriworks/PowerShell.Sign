@@ -4,7 +4,7 @@
         <id>Meriworks.PowerShell.Sign</id>
         <version>$version$</version>
         <authors>dhvik</authors>
-        <license type="file">LICENSE.md</license>
+        <license type="file">license.md</license>
         <projectUrl>https://github.com/meriworks/PowerShell.Sign</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Adds PowerShell functions to allow you to sign scripts and files using a code signing certificate.</description>
