@@ -4,7 +4,7 @@
         <id>Meriworks.PowerShell.Sign</id>
         <version>$version$</version>
         <authors>dhvik</authors>
-        <licenseUrl>https://raw.githubusercontent.com/meriworks/PowerShell.Sign/master/LICENSE.md</licenseUrl>
+        <license type="file">LICENSE.md</license>
         <projectUrl>https://github.com/meriworks/PowerShell.Sign</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Adds PowerShell functions to allow you to sign scripts and files using a code signing certificate.</description>
@@ -17,6 +17,7 @@
         </dependencies>
     </metadata>
     <files>
+        <file src="..\license.md" target="license.md"/>
         <file src="nuspec\build\**\*.*" target="build\"/>
         <file src="nuspec\tools\**\*.*" target="tools\"/>
     </files>
